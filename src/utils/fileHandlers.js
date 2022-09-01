@@ -42,7 +42,6 @@ try {
   let talkerIndex;
 
   arrayTalker.forEach((talker, i) => {
-    console.log(talker);
     if (talker.id === Number(id)) {
       arrayTalker[i].name = info.name;
       arrayTalker[i].age = info.age;
@@ -64,4 +63,15 @@ const deleteTalkerById = async (id) => {
   await fs.writeFile(path, JSON.stringify(newArrayTalker));
   return true;
 };
-module.exports = { readFile, getTalkerById, addTalker, updateTalkerById, deleteTalkerById };
+
+const searchTalkerByName = async (term) => {
+  const arrayTalker = await readFile();
+  const newArrayTalker = arrayTalker.filter((talker) => talker.name.includes(term));
+  return newArrayTalker;
+};
+module.exports = { readFile,
+  getTalkerById,
+  addTalker,
+  updateTalkerById,
+  deleteTalkerById,
+  searchTalkerByName };

@@ -3,7 +3,8 @@ const { readFile,
   getTalkerById,
   addTalker,
   updateTalkerById,
-  deleteTalkerById } = require('../utils/fileHandlers');
+  deleteTalkerById,
+  searchTalkerByName } = require('../utils/fileHandlers');
 const { nameValidation,
   ageValidation,
   talkValidation,
@@ -16,6 +17,12 @@ const route = express.Router();
 route.get('/', async (req, res) => {
   const talkers = await readFile();
   res.status(200).json(talkers);
+});
+
+route.get('/search/', tokenValidation, async (req, res) => {
+  const { q } = req.query;
+  const searchResults = await searchTalkerByName(q);
+  return res.status(200).json(searchResults);
 });
 
 route.get('/:id', async (req, res) => {
