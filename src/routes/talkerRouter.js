@@ -1,5 +1,9 @@
 const express = require('express');
-const { readFile, getTalkerById, addTalker, updateTalkerById } = require('../utils/fileHandlers');
+const { readFile,
+  getTalkerById,
+  addTalker,
+  updateTalkerById,
+  deleteTalkerById } = require('../utils/fileHandlers');
 const { nameValidation,
   ageValidation,
   talkValidation,
@@ -21,12 +25,21 @@ route.get('/:id', async (req, res) => {
   return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
-route.use(tokenValidation,
+route.use(tokenValidation);
+
+route.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  await deleteTalkerById(id);
+  return res.sendStatus(204);
+});
+
+route.use(
   nameValidation,
   ageValidation,
   talkValidation,
   watchedValidation,
-  rateValidation);
+  rateValidation,
+);
 
 route.post('/', async (req, res) => {
   const addedTalker = await addTalker(req.body);
@@ -37,7 +50,6 @@ route.post('/', async (req, res) => {
 route.put('/:id', async (req, res) => {
   const { id } = req.params;
   const updatedTalker = await updateTalkerById(req.body, id);
-  console.log(updatedTalker);
   return res.status(200).json(updatedTalker);
 });
 

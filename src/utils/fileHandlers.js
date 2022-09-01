@@ -56,4 +56,12 @@ try {
   return null;
 }
 };
-module.exports = { readFile, getTalkerById, addTalker, updateTalkerById };
+
+const deleteTalkerById = async (id) => {
+  const arrayTalker = await readFile();
+  const newArrayTalker = arrayTalker.filter((talker) => talker.id !== Number(id));
+  
+  await fs.writeFile(path, JSON.stringify(newArrayTalker));
+  return true;
+};
+module.exports = { readFile, getTalkerById, addTalker, updateTalkerById, deleteTalkerById };
