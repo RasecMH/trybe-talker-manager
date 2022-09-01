@@ -1,5 +1,5 @@
 const express = require('express');
-const { readFile, getTalkerById, addTalker } = require('../utils/fileHandlers');
+const { readFile, getTalkerById, addTalker, updateTalkerById } = require('../utils/fileHandlers');
 const { nameValidation,
   ageValidation,
   talkValidation,
@@ -32,6 +32,13 @@ route.post('/', async (req, res) => {
   const addedTalker = await addTalker(req.body);
 
   return res.status(201).json(addedTalker);
+});
+
+route.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const updatedTalker = await updateTalkerById(req.body, id);
+  console.log(updatedTalker);
+  return res.status(200).json(updatedTalker);
 });
 
 module.exports = route; 

@@ -36,4 +36,24 @@ const addTalker = async (talker) => {
   }
 };
 
-module.exports = { readFile, getTalkerById, addTalker };
+const updateTalkerById = async (info, id) => {
+try {
+  const arrayTalker = await readFile();
+  let talkerIndex;
+
+  arrayTalker.forEach((talker, i) => {
+    console.log(talker);
+    if (talker.id === Number(id)) {
+      arrayTalker[i].name = info.name;
+      arrayTalker[i].age = info.age;
+      arrayTalker[i].talk = info.talk;
+      talkerIndex = i;
+    }
+  });
+  await fs.writeFile(path, JSON.stringify(arrayTalker));
+  return arrayTalker[talkerIndex];
+} catch (error) {
+  return null;
+}
+};
+module.exports = { readFile, getTalkerById, addTalker, updateTalkerById };
